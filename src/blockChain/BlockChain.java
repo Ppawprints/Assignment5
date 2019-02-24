@@ -17,7 +17,7 @@ public class BlockChain {
   // +--------------+
 
   public BlockChain(int initial) throws NoSuchAlgorithmException {
-    this.first = new Node(new Block(initial));
+    this.first = new Node(new Block(0, initial, null));
     this.last = this.first;
   }
 
@@ -25,12 +25,10 @@ public class BlockChain {
   // | Methods |
   // +---------+
 
+
   public Block mine(int amount) throws NoSuchAlgorithmException {
     if (!isAmountValid(amount)) {
       return null;
-    }
-    if (first == last) {
-      return new Node(new Block(amount)).data;
     }
     return new Node(new Block(getSize(), amount, last.data.getHash())).data;
   }
@@ -38,6 +36,10 @@ public class BlockChain {
   public int getSize() {
     return last.data.getNum() + 1;
   }
+  /*
+   * public Block mine(int amount) throws NoSuchAlgorithmException { return new
+   * Block(this.last.data.getNum() + 1, amount, this.last.data.getHash()); }
+   */
 
   public void append(Block blk) throws IllegalArgumentException {
     if (first == last) {

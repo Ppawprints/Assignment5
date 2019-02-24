@@ -29,17 +29,15 @@ public class Hash {
   }
 
   public boolean isValid() {
-    if (data[0] == 0 && data[1] == 0 && data[2] == 0) {
-      return true;
-    }
-    return false;
+    return (data[0] == 0 && data[1] == 0 && data[2] == 0);
   }
 
+
   public String toString() {
-    String result = String.format("%02X", (Byte.toUnsignedInt(data[0])));
+    String result = String.format("%x", (Byte.toUnsignedInt(data[0])));
     for (int i = 0; i < data.length; i++) {
-      result += (String.format("%02X", (Byte.toUnsignedInt(data[i]))));
-    }    
+      result += (String.format("%x", (Byte.toUnsignedInt(data[i]))));
+    }
     return result;
   }
 
