@@ -14,6 +14,7 @@ public class BlockChainDriver {
 
     String command = new String();
     do {
+      pen.println();
       pen.println(chain.toString());
       pen.println();
       pen.println("Please enter your command here: ");
@@ -22,7 +23,6 @@ public class BlockChainDriver {
         int amount = 0;
         pen.println("Please enter the amount of transaction here: ");
         amount = Integer.valueOf(scanner.next());
-
         Block temp = chain.mine(amount);
         if (temp == null) {
           pen.println("Mining failed: The amount you entered is not transferable.");

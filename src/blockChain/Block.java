@@ -21,8 +21,8 @@ public class Block {
 
 
   /**
-   * Used to construct Block when num, amount and prevHash is known. Mine for nonce generate valid
-   * hash
+   * Used to construct Block when num, amount and prevHash are known. Mine for nonce to generate
+   * valid hash
    * 
    * @param num
    * @param amount
@@ -30,16 +30,15 @@ public class Block {
    * @throws NoSuchAlgorithmException
    */
   public Block(int num, int amount, Hash prevHash) throws NoSuchAlgorithmException {
-    this.num = 0;
+    this.num = num;
     this.amount = amount;
     this.prevHash = prevHash;
 
-    long currentNonce = -1;
+    long currentNonce = 0;
+    Hash currentHash;
+    byte temp[];
     do {
       currentNonce++;
-
-      byte temp[];
-
       if (prevHash == null) {
         temp = ByteBuffer.allocate(16).putInt(this.num).putInt(this.amount).putLong(currentNonce)
             .array();
@@ -49,14 +48,14 @@ public class Block {
       }
       MessageDigest md = MessageDigest.getInstance("sha-256");
       md.update(temp);
-      this.hash = new Hash(md.digest());
-    } while (!this.hash.isValid()); // end do-while
+      currentHash = new Hash(md.digest());
+    } while (!currentHash.isValid()); // end do-while
     this.nonce = currentNonce;
-
+    this.hash = currentHash;
   }
 
   /**
-   * Used to construct the rest of the Blocks when num, amount, prevHash and nonce is known
+   * Used to construct the rest of the Blocks when num, amount, prevHash and nonce are known
    * 
    * @param num
    * @param amount
@@ -69,13 +68,19 @@ public class Block {
     this.amount = amount;
     this.prevHash = prevHash;
     this.nonce = nonce;
-    byte[] temp = ByteBuffer.allocate(16 + prevHash.getData().length).putInt(this.num)
-        .putInt(this.amount).put(this.prevHash.getData()).putLong(this.nonce).array();
-    MessageDigest md = MessageDigest.getInstance("sha-256");
-    md.update(temp);
-    this.hash = new Hash(md.digest());
-  }
 
+    byte temp[];
+    if (prevHash == null) {
+      temp =
+          ByteBuffer.allocate(16).putInt(this.num).putInt(this.amount).putLong(this.nonce).array();
+    } else {
+      temp = ByteBuffer.allocate(16 + prevHash.getData().length).putInt(this.num)
+          .putInt(this.amount).put(this.prevHash.getData()).putLong(this.nonce).array();
+      MessageDigest md = MessageDigest.getInstance("sha-256");
+      md.update(temp);
+      this.hash = new Hash(md.digest());
+    }
+  }
   // +---------+------------------------------------------------------
   // | Methods |
   // +---------+

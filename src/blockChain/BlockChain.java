@@ -30,20 +30,18 @@ public class BlockChain {
     if (!isAmountValid(amount)) {
       return null;
     }
-    return new Node(new Block(getSize(), amount, last.data.getHash())).data;
+    return new Block(getSize(), amount, last.data.getHash());
   }
 
   public int getSize() {
     return last.data.getNum() + 1;
   }
-  /*
-   * public Block mine(int amount) throws NoSuchAlgorithmException { return new
-   * Block(this.last.data.getNum() + 1, amount, this.last.data.getHash()); }
-   */
+
 
   public void append(Block blk) throws IllegalArgumentException {
     if (first == last) {
-      if (blk.getNum() != getSize() || !isAmountValid(blk.getAmount())) {
+      if (blk.getNum() != getSize() || !isAmountValid(blk.getAmount())
+          || !blk.getHash().isValid()) {
         throw new IllegalArgumentException();
       } else {
         last = new Node(blk);
@@ -52,7 +50,7 @@ public class BlockChain {
       }
     }
     if (!blk.getPrevHash().equals(last.data.getHash()) || blk.getNum() != getSize()
-        || !isAmountValid(blk.getAmount())) {
+        || !isAmountValid(blk.getAmount()) || !blk.getHash().isValid()) {
       throw new IllegalArgumentException();
     }
     last.next = new Node(blk);

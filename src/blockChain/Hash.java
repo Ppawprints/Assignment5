@@ -34,9 +34,9 @@ public class Hash {
 
 
   public String toString() {
-    String result = String.format("%x", (Byte.toUnsignedInt(data[0])));
-    for (int i = 0; i < data.length; i++) {
-      result += (String.format("%x", (Byte.toUnsignedInt(data[i]))));
+    String result = String.format("%02x", (Byte.toUnsignedInt(data[0])));
+    for (int i = 1; i < data.length; i++) {
+      result += (String.format("%02x", (Byte.toUnsignedInt(data[i]))));
     }
     return result;
   }
