@@ -28,16 +28,16 @@ public class Hash {
   }
 
   public boolean isValid() {
-    if (data[0] - 0 == 0 && data[1] - 0 == 0 && data[2] - 0 == 0) {
+    if (data[0] == 0 && data[1] == 0 && data[2] == 0) {
       return true;
     }
     return false;
   }
 
   public String toString() {
-    String result = new String();
-    for (int i = 0; i < data.length; i++) {
-      result.concat(String.format("X", (Byte.toUnsignedInt(data[i]))));
+    String result = String.format("%02X", (Byte.toUnsignedInt(data[0])));
+    for (int i = 1; i < data.length; i++) {
+      result.concat(String.format("%02X", (Byte.toUnsignedInt(data[i]))));
     }
     return result;
   }

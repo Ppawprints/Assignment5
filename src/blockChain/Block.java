@@ -85,6 +85,17 @@ public class Block {
     this.hash = new Hash((byte[]) md.digest());
   }
 
+  public Block(int amount, long nonce) throws NoSuchAlgorithmException {
+	    this.num = 0;
+	    this.amount = amount;
+	    this.prevHash = null;
+	    this.nonce = nonce;
+	    byte[] temp = ByteBuffer.allocate(16).putInt(this.num)
+	        .putInt(this.amount).putLong(this.nonce).array();
+	    MessageDigest md = MessageDigest.getInstance("sha-256");
+	    md.update(temp);
+	    this.hash = new Hash((byte[]) md.digest());
+	  }
 
   // +---------+------------------------------------------------------
   // | Methods |
