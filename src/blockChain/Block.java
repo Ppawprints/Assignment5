@@ -15,7 +15,6 @@ public class Block {
   private long nonce;
   private Hash hash;
 
-
   // +--------------+-------------------------------------------------
   // | Constructors |
   // +--------------+
@@ -25,37 +24,33 @@ public class Block {
     this.amount = amount;
     this.prevHash = null;
 
-    this.nonce = (long) (Math.random() * Long.MAX_VALUE);
-    byte[] temp =
-        ByteBuffer.allocate(16).putInt(this.num).putInt(this.amount).putLong(this.nonce).array();
-    MessageDigest md = MessageDigest.getInstance("sha-256");
-    md.update(temp);
-    this.hash = new Hash((byte[]) md.digest());
-
-    while (!this.hash.isValid()) {
-      this.nonce = (long) (Math.random() * Long.MAX_VALUE);
-
-      temp =
-          ByteBuffer.allocate(16).putInt(this.num).putInt(this.amount).putLong(this.nonce).array();
-      md = MessageDigest.getInstance("sha-256");
-      md.update(temp);
-
-      this.hash = new Hash((byte[]) md.digest());
-      //System.out.println(nonce + "Current hash: " + this.hash.toString());
-    }
-
-    // while (!hash.isValid())
-    // do {
-    // this.nonce = (long) (Math.random() * 100000);
-    // System.out.println("Nonce = " + nonce);
+    // this.nonce = (long) (Math.random() * Long.MAX_VALUE);
     // byte[] temp =
     // ByteBuffer.allocate(16).putInt(this.num).putInt(this.amount).putLong(this.nonce).array();
     // MessageDigest md = MessageDigest.getInstance("sha-256");
     // md.update(temp);
     // this.hash = new Hash((byte[]) md.digest());
-    // } while (!this.hash.isValid());
-  }
+    //
+    // while (!this.hash.isValid()) {
+    // this.nonce = (long) (Math.random() * Long.MAX_VALUE);
+    //
+    // temp =
+    // ByteBuffer.allocate(16).putInt(this.num).putInt(this.amount).putLong(this.nonce).array();
+    // md = MessageDigest.getInstance("sha-256");
+    // md.update(temp);
+    //
+    // this.hash = new Hash((byte[]) md.digest());
+    // }
 
+      do {
+        this.nonce = (long) (Math.random() * Long.MAX_VALUE);
+        byte[] temp = ByteBuffer.allocate(16).putInt(this.num).putInt(this.amount)
+            .putLong(this.nonce).array();
+        MessageDigest md = MessageDigest.getInstance("sha-256");
+        md.update(temp);
+        this.hash = new Hash((byte[]) md.digest());
+      } while (!this.hash.isValid());
+  }
 
   public Block(int num, int amount, Hash prevHash) throws NoSuchAlgorithmException {
     this.num = num;
@@ -72,7 +67,7 @@ public class Block {
     } while (!hash.isValid());
   }
 
-
+  //need to check whether hash is valid?
   public Block(int num, int amount, Hash prevHash, long nonce) throws NoSuchAlgorithmException {
     this.num = num;
     this.amount = amount;
@@ -85,17 +80,17 @@ public class Block {
     this.hash = new Hash((byte[]) md.digest());
   }
 
-  public Block(int amount, long nonce) throws NoSuchAlgorithmException {
-	    this.num = 0;
-	    this.amount = amount;
-	    this.prevHash = null;
-	    this.nonce = nonce;
-	    byte[] temp = ByteBuffer.allocate(16).putInt(this.num)
-	        .putInt(this.amount).putLong(this.nonce).array();
-	    MessageDigest md = MessageDigest.getInstance("sha-256");
-	    md.update(temp);
-	    this.hash = new Hash((byte[]) md.digest());
-	  }
+  public Block(int num, int amount, long nonce) throws NoSuchAlgorithmException {
+    this.num = num;
+    this.amount = amount;
+    this.prevHash = null;
+    this.nonce = nonce;
+    byte[] temp =
+        ByteBuffer.allocate(16).putInt(this.num).putInt(this.amount).putLong(this.nonce).array();
+    MessageDigest md = MessageDigest.getInstance("sha-256");
+    md.update(temp);
+    this.hash = new Hash((byte[]) md.digest());
+  }
 
   // +---------+------------------------------------------------------
   // | Methods |
@@ -122,10 +117,11 @@ public class Block {
   }
 
   public String toString() {
-    return "Block " + num + "(Amount: " + amount + ", Nonce: " + nonce + ", prevHash: "
-        + prevHash.toString() + ", hash: " + hash.toString() + ")";
+    if (num != 0) {
+      return "Block " + num + "(Amount: " + amount + ", Nonce: " + nonce + ", prevHash: "
+          + prevHash.toString() + ", hash: " + hash.toString() + ")";
+    }
+    return "Block " + num + "(Amount: " + amount + ", Nonce: " + nonce + ", prevHash: null"
+        + ", hash: " + hash.toString() + ")";
   }
-
-
 }
-

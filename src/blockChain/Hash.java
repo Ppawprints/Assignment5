@@ -1,4 +1,5 @@
 package blockChain;
+
 import java.util.Arrays;
 
 public class Hash {
@@ -36,9 +37,9 @@ public class Hash {
 
   public String toString() {
     String result = String.format("%02X", (Byte.toUnsignedInt(data[0])));
-    for (int i = 1; i < data.length; i++) {
-      result.concat(String.format("%02X", (Byte.toUnsignedInt(data[i]))));
-    }
+    for (int i = 0; i < data.length; i++) {
+      result += (String.format("%02X", (Byte.toUnsignedInt(data[i]))));
+    }    
     return result;
   }
 
